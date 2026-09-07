@@ -1,6 +1,6 @@
 # Azure Deployment Plan
 
-> **Status:** Validated
+> **Status:** Deployed
 
 Generated: 2026-09-07
 
@@ -117,10 +117,13 @@ No backend/API project present — static hosting only.
 - [x] Update plan status to "Validated"
 
 ### Phase 4: Deployment
-- [ ] Invoke azure-deploy skill
-- [ ] Deployment successful
-- [ ] Report deployed endpoint URL
-- [ ] Update plan status to "Deployed"
+- [x] Invoke azure-deploy skill
+- [x] Deployment successful
+- [x] Report deployed endpoint URLs
+- [x] Update plan status to "Deployed"
+
+**Deployed endpoint:** https://happy-ground-0e464d603.5.azurestaticapps.net/
+**GitHub Actions CI/CD:** `.github/workflows/azure-static-web-apps.yml` — auto-deploys on push to `master` using `AZURE_STATIC_WEB_APPS_API_TOKEN` repo secret (deployment-token approach; federated-identity `azd pipeline config` failed due to insufficient RBAC permissions — orphan `rg-ai-layout-msi` resource group was deleted).
 
 ---
 
