@@ -1,8 +1,10 @@
 # Azure Deployment Plan
 
-> **Status:** Planning
+> **Status:** Validated
 
 Generated: 2026-09-07
+
+**GitHub repo:** https://github.com/dkamni/dk-poc-prototype-ui (public)
 
 ---
 
@@ -92,18 +94,27 @@ No backend/API project present — static hosting only.
 - [ ] **User approved this plan**
 
 ### Phase 2: Execution
-- [ ] Research components
-- [ ] Generate infrastructure files (`azure.yaml`, `infra/main.bicep`, `infra/main.parameters.json`)
-- [ ] Generate `staticwebapp.config.json`
-- [ ] Init git repo + create GitHub repo + push
-- [ ] Generate GitHub Actions workflow for CI/CD
-- [ ] Generate application configuration
-- [ ] Update plan status to "Ready for Validation"
+- [x] Research components
+- [x] Generate infrastructure files (`azure.yaml`, `infra/main.bicep`, `infra/main.parameters.json`)
+- [x] Generate `staticwebapp.config.json`
+- [x] Init git repo + create GitHub repo (dkamni/dk-poc-prototype-ui) + push
+- [ ] Generate GitHub Actions workflow for CI/CD (via `azd pipeline config` during deploy)
+- [x] Generate application configuration
+- [x] Update plan status to "Ready for Validation"
 
 ### Phase 3: Validation
-- [ ] Invoke azure-validate skill
-- [ ] All validation checks pass
-- [ ] Update plan status to "Validated"
+- [x] Invoke azure-validate skill
+- [x] All validation checks pass
+  - [x] 1. AZD Installation (azd 1.33.0)
+  - [x] 2. Schema Validation (azure.yaml valid)
+  - [x] 3. Environment Setup (azd env `dk-poc-ui` created)
+  - [x] 4. Authentication Check (dk@greycon.com)
+  - [x] 5. Subscription/Location Check (sub-agentic-essentials-dev / westeurope)
+  - [x] 7. Provision Preview (`azd provision --preview` succeeded: creates RG `dk-poc-ui` + Static Web App `stapp-ai-layout-afmecc`)
+  - [x] 8. Build Verification (`npm run build` succeeded after fixing pre-existing TS error in AppShell.tsx)
+  - [x] 10. Package Validation (`azd package` succeeded)
+  - [x] 11. Azure Policy Validation (only audit-mode Security Center policy + MFA enforcement; no blockers)
+- [x] Update plan status to "Validated"
 
 ### Phase 4: Deployment
 - [ ] Invoke azure-deploy skill
@@ -117,7 +128,13 @@ No backend/API project present — static hosting only.
 
 | Check | Command Run | Result | Timestamp |
 |-------|-------------|--------|-----------|
-| _pending_ | | | |
+| AZD version | `azd version` | ✅ Pass (1.33.0) | 2026-09-07 |
+| Auth | `azd auth login --check-status` | ✅ Pass (dk@greycon.com) | 2026-09-07 |
+| Env values | `azd env get-values` | ✅ Pass | 2026-09-07 |
+| Provision preview | `azd provision --preview --no-prompt` | ✅ Pass | 2026-09-07 |
+| Build | `npm run build` | ✅ Pass (after fix) | 2026-09-07 |
+| Package | `azd package --no-prompt` | ✅ Pass | 2026-09-07 |
+| Policy check | `policy_assignment_list` | ✅ Pass (no blockers) | 2026-09-07 |
 
 ---
 

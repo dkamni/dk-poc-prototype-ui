@@ -16,7 +16,8 @@ const indexRoute = createRoute({
 });
 
 // Placeholder page components — replaced with real list/detail views in later turns.
-const stubRoute = (path: string, label: string) =>
+// Generic over TPath so the literal route path (e.g. '/workcentres') is preserved for type-safe Link `to` props.
+const stubRoute = <TPath extends string>(path: TPath, label: string) =>
   createRoute({ getParentRoute: () => rootRoute, path, component: () => <div>{label} — coming soon.</div> });
 
 const sitesRoute = createRoute({ getParentRoute: () => rootRoute, path: '/sites', component: SitesList });

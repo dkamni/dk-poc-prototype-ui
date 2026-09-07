@@ -6,9 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import Collapse from '@mui/material/Collapse';
 import ListItemButton from '@mui/material/ListItemButton';
-import { Link, Outlet } from '@tanstack/react-router';
+import { Outlet, createLink } from '@tanstack/react-router';
 import { useMsal } from '@azure/msal-react';
 import { palette } from '../../tokens.ts';
+
+// Bridges MUI's `component` prop typing with TanStack Router's Link props (to, activeProps, etc.).
+const NavListItemButton = createLink(ListItemButton);
 
 const NAV_GROUPS = [
   {
@@ -106,15 +109,14 @@ export default function AppShell() {
                     </ListItemButton>
                     <Collapse in={isOpen}>
                       {group.items.map((item) => (
-                        <ListItemButton
+                        <NavListItemButton
                           key={item.to}
-                          component={Link}
                           to={item.to}
                           sx={{ pl: '32px', pr: '12px', py: '6px', borderRadius: 1, fontSize: 14 }}
                           activeProps={{ sx: { bgcolor: palette.navActiveBg, color: palette.navActiveText, fontWeight: 600 } }}
                         >
                           {item.label}
-                        </ListItemButton>
+                        </NavListItemButton>
                       ))}
                     </Collapse>
                   </Box>
