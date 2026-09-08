@@ -25,6 +25,16 @@ jobs:
           npm run build
         env:
           VITE_AZURE_CLIENT_ID: ${{ secrets.VITE_AZURE_CLIENT_ID }}
+      - name: Verify client ID was embedded in build
+        run: |
+          if [ -z "${{ secrets.VITE_AZURE_CLIENT_ID }}" ]; then
+            echo "::error::VITE_AZURE_CLIENT_ID secret is empty or unset. Sign-in would ship broken (AADSTS900144)."
+            exit 1
+          fi
+          if ! grep -rq -- "${{ secrets.VITE_AZURE_CLIENT_ID }}" dist/assets/*.js; then
+            echo "::error::VITE_AZURE_CLIENT_ID was not found in the built dist/assets/*.js output. It may have been dropped by a build misconfiguration."
+            exit 1
+          fi
       - name: Deploy
         uses: Azure/static-web-apps-deploy@v1
         with:
